@@ -1,0 +1,15 @@
+<div class="blog-list-widget">
+    <div class="list-group">
+
+        {% for post in recent_posts %}
+            <a href="{% url "blog:single-blog" slug=post.slug %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="w-100 justify-content-between">
+                    <img src="{{post.image.url}}" alt="" class="img-fluid float-left">
+                    <h5 class="mb-1">{{post.title}}</h5>
+                    <small>{{post.published_date|date}}</small>
+                </div>
+            </a>
+        {% endfor %}
+
+    </div>
+</div><!-- end blog-list -->

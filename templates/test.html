@@ -1,0 +1,7 @@
+{% for key, value in archive.items %}
+    <p>{{key}}</p>
+    {% for post in value %}
+        <h2>{{post.title}}</h2>
+        <p>{{ post.content}}</p>
+    {% endfor %}
+{% endfor %}
