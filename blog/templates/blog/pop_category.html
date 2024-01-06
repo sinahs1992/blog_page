@@ -1,7 +1,7 @@
 <div class="link-widget">
     <ul>
         {% for category in categories %}
-            <li><a href="#">{{ category.name }}<span>({{category.category_count}})</span></a></li>
+            <li><a href="{% url "blog:category-page" category_name=category.name %}">{{ category.name }}<span>({{category.category_count}})</span></a></li>
         {% endfor %}
     </ul>
 </div><!-- end link-widget -->

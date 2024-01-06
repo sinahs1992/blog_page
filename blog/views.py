@@ -2,9 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from blog.models import Post
 from django.utils import timezone
 
-def home_blog(request):
+def home_blog(request, **kwargs):
     current_time =timezone.now()
     posts = Post.objects.filter(published_date__lte=current_time, status=True)
+    if kwargs.get('category_name'):
+        posts = posts.filter(category__name=kwargs['category_name'])
+
     return render(request, 'blog/blog-home.html', {'posts': posts})     
 
 def single_blog(request, slug):
@@ -14,6 +17,11 @@ def single_blog(request, slug):
     post = get_object_or_404(published_posts, slug=slug)
     next_post = published_posts.filter(published_date__gt=post.published_date).order_by('published_date').first()
     previous_object = published_posts.filter(published_date__lt=post.published_date).order_by('-published_date').first()
+
+    # increase view_count
+    post.view_count += 1
+    post.save()
+
     context = {'post': post, 'next_post':next_post, 'previous_object':previous_object}
     return render(request, 'blog/blog-single.html', context)
 
@@ -31,3 +39,8 @@ def test(request):
             archive[year].append(post)
     context = {'archive':archive}
     return render(request, 'test.html', context)
+
+
+def tag_test(request):
+    return render(request, 'tag_test.html', {'example' : [2, 4, 6]})
+
