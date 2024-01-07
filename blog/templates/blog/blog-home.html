@@ -43,10 +43,19 @@
                                         <div class="blog-meta big-meta col-md-8">
                                             <h4><a href="{% url "blog:single-blog" slug=post.slug %}" title="">{{post.title}}</a></h4>
                                             <p>{{post.content|truncatewords:30}}</p>
-                                                <small><a href="blog-category-01.html" title="">{{post.tag.name}}</a></small>
-                                            <small><a href="single.html" title="">{{post.published_date|date:"d M Y"}}</a></small>
-                                            <small><a href="blog-author.html" title="">by {{post.author.username}}</a></small>
+                                                <small><a href="{% url "blog:tag-page" tag_name=post.tag.name %}" title="">{{post.tag.name}}</a></small>
+                                            <small>{{post.published_date|date:"d M Y"}}</small>
+                                            <small><a href="{% url "blog:author-page" author_username=post.author.username %}" title="">by {{post.author.username}}</a></small>
                                             <a>{{post.view_count}} <i class="fa fa-eye"></i></a>
+
+                                            <div class="tag-cloud-single mt-4">
+                                                <span>Categories</span>
+                                                {% for cat in post.category.all|slice:":4" %}
+                                                    <small><a href="{% url "blog:category-page" category_name=cat.name %}" title="">{{cat.name}}</a></small>
+                                                {% endfor %}
+            
+                                            </div><!-- end meta -->
+
                                         </div><!-- end meta -->
                                     </div><!-- end blog-box -->
                                     <hr>
@@ -62,31 +71,38 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <nav aria-label="Page navigation">
-                                    <ul class="pagination justify-content-start">
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
-                                    </ul>
+                                    {% if posts.has_other_pages %}
+                                        <ul class="pagination justify-content-start">
+
+                                            {% if posts.has_previous %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
+                                                </li>
+                                            {% endif %}
+
+                                            {% for i in page_range %}
+                                                {% if posts.number == i %}
+                                                    <li class="page-item primary"><a class="page-link" href="?page={{i}}">--{{ i }}--</a></li>
+                                                {% else %}
+                                                    <li class="page-item"><a class="page-link" href="?page={{i}}">{{ i }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if posts.has_next %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    {% endif %}
                                 </nav>
+
                             </div><!-- end col -->
                         </div><!-- end row -->
                     </div><!-- end col -->
 
                     <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                         <div class="sidebar">
-                            <div class="widget">
-                                <h2 class="widget-title">Search</h2>
-                                <form class="form-inline search-form">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Search on the site">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                                </form>
-                            </div><!-- end widget -->
-
+                            {% include "blog/blog-search.html" %}
                             <div class="widget">
                                 <h2 class="widget-title">Recent Posts</h2>
                                 {% recent_posts %}

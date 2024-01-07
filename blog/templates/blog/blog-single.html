@@ -12,31 +12,23 @@
                             <div class="blog-title-area">
                                 <ol class="breadcrumb hidden-xs-down">
                                     <li class="breadcrumb-item"><a href="{% url "mysite:index" %}">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="#">Blog</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url "blog:home-blog" %}">Blog</a></li>
                                     <li class="breadcrumb-item active">{{ post.title}}</li>
                                 </ol>
 
-                                <span class="color-aqua"><a href="blog-category-01.html" title="">{{post.tag.name}}</a></span>
+                                <span class="color-aqua"><a href="{% url "blog:tag-page" tag_name=post.tag.name %}" title="">{{post.tag.name}}</a></span>
 
                                 <h3>{{post.title}}</h3>
 
                                 <div class="blog-meta big-meta">
-                                    <small><a href="single.html" title="">{{ post.published_date|date:"d M Y"}}</a></small>
+                                    <small>{{ post.published_date|date:"d M Y"}}</small>
                                     {% if post.author %}
-                                        <small><a href="blog-author.html" title="">{{ post.author.username }}</a></small>
+                                        <small><a href="{% url "blog:author-page" author_username=post.author.username %}" title="">{{ post.author.username }}</a></small>
                                     {% else %}
                                         <small>Unknow</small>
                                     {% endif %}
-                                    <small><a href="#" title=""><i class="fa fa-eye"></i>{{ post.view_count}}</a></small>
+                                    <small><i class="fa fa-eye"></i>  {{ post.view_count}}</small>
                                 </div><!-- end meta -->
-
-                                <div class="post-sharing">
-                                    <ul class="list-inline">
-                                        <li><a href="#" class="fb-button btn btn-primary"><i class="fa fa-facebook"></i> <span class="down-mobile">Share on Facebook</span></a></li>
-                                        <li><a href="#" class="tw-button btn btn-primary"><i class="fa fa-twitter"></i> <span class="down-mobile">Tweet on Twitter</span></a></li>
-                                        <li><a href="#" class="gp-button btn btn-primary"><i class="fa fa-google-plus"></i></a></li>
-                                    </ul>
-                                </div><!-- end post-sharing -->
                             </div><!-- end title -->
 
                             <div class="single-post-media">
@@ -55,18 +47,10 @@
                                 <div class="tag-cloud-single">
                                     <span>Categories</span>
                                     {% for cat in post.category.all|slice:":4" %}
-                                        <small><a href="#" title="">{{cat.name}}</a></small>{% if not forloop.last %}, {% endif %}
+                                        <small><a href="{% url "blog:category-page" category_name=cat.name %}" title="">{{cat.name}}</a></small>{% if not forloop.last %}, {% endif %}
                                     {% endfor %}
 
                                 </div><!-- end meta -->
-
-                                <div class="post-sharing">
-                                    <ul class="list-inline">
-                                        <li><a href="#" class="fb-button btn btn-primary"><i class="fa fa-facebook"></i> <span class="down-mobile">Share on Facebook</span></a></li>
-                                        <li><a href="#" class="tw-button btn btn-primary"><i class="fa fa-twitter"></i> <span class="down-mobile">Tweet on Twitter</span></a></li>
-                                        <li><a href="#" class="gp-button btn btn-primary"><i class="fa fa-google-plus"></i></a></li>
-                                    </ul>
-                                </div><!-- end post-sharing -->
                             </div><!-- end title -->
 
                             <hr class="invis1">
@@ -246,15 +230,7 @@
 
                     <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                         <div class="sidebar">
-                            <div class="widget">
-                                <h2 class="widget-title">Search</h2>
-                                <form class="form-inline search-form">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Search on the site">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                                </form>
-                            </div><!-- end widget -->
+                            {% include "blog/blog-search.html" %}
 
                             <div class="widget">
                                 <h2 class="widget-title">Recent Posts</h2>
