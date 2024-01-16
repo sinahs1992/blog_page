@@ -28,14 +28,28 @@
 
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <form class="form-wrapper">
+                                    <form class="form-wrapper" method="POST" action="{% url "mysite:contact" %}">
                                     <h4>Contact form</h4>
-                                        <input type="text" class="form-control" placeholder="Your name">
-                                        <input type="text" class="form-control" placeholder="Email address">
-                                        <input type="text" class="form-control" placeholder="Phone">
-                                        <input type="text" class="form-control" placeholder="Subject">
-                                        <textarea class="form-control" placeholder="Your message"></textarea>
-                                        <button type="submit" class="btn btn-primary">Send <i class="fa fa-envelope-open-o"></i></button>
+                                        {% csrf_token %}
+                                        {% if not request.user.is_authenticated %}
+                                            <input type="text" name="name" class="form-control" placeholder="Your name">
+                                            <input type="email" name="email" class="form-control" placeholder="Email address">
+                                            <input type="text" name="phone_number" class="form-control" placeholder="Phone">
+                                        {% else %}
+                                            {% if not request.user.is_superuser %}
+                                                <input type="hidden" name="name" value="{{ request.user.get_full_name }}" />
+                                                <input type="hidden" name="email" value="{{ request.user.email }}" />
+                                                <input type="hidden" name="phone_number" value="{{ request.user.phone_number }}" />
+                                            {% else %}
+                                                <input type="hidden" name="name" value="Site Admin" />
+                                                <input type="hidden" name="email" value="admin@gmail.com" />
+                                                <input type="hidden" name="phone_number" value="09116464436" />
+                                            {% endif %}
+                                        {% endif %}
+                                        
+                                        <input type="text" name="subject" class="form-control" placeholder="Subject">
+                                        <textarea class="form-control" name="message" placeholder="Your message"></textarea>
+                                        <button type="submit"  class="btn btn-primary">Send <i class="fa fa-envelope-open-o"></i></button>
                                     </form>
                                 </div>
                             </div>

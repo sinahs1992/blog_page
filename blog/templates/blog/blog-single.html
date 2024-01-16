@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load functions %}
+{% load humanize %}
 
 {% block content %}
 
@@ -27,7 +28,7 @@
                                     {% else %}
                                         <small>Unknow</small>
                                     {% endif %}
-                                    <small><i class="fa fa-eye"></i>  {{ post.view_count}}</small>
+                                    <small><i class="fa fa-eye"></i>  {{ post.view_count|apnumber}}</small>
                                 </div><!-- end meta -->
                             </div><!-- end title -->
 

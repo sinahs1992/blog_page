@@ -31,15 +31,25 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Default Apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Internal Apps
+    "django.contrib.humanize",
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+    # pip   Installed Apps
+    'django_extensions',
+    'robots',
+    # Custom Apps
     "mysite.apps.MysiteConfig",
     "blog.apps.BlogConfig",
     "users.apps.UsersConfig",
+
 ]
 
 MIDDLEWARE = [
@@ -141,3 +151,10 @@ AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+# sites framework
+SITE_ID = 2
+
+# robots
+ROBOTS_USE_HOST = False
+ROBOTS_USE_SITEMAP = False

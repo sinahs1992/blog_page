@@ -3,7 +3,7 @@
 
 {% block content %}
 {% load functions %}
-
+{% load humanize %}
 
         <div class="page-title wb">
             <div class="container">
@@ -46,7 +46,7 @@
                                                 <small><a href="{% url "blog:tag-page" tag_name=post.tag.name %}" title="">{{post.tag.name}}</a></small>
                                             <small>{{post.published_date|date:"d M Y"}}</small>
                                             <small><a href="{% url "blog:author-page" author_username=post.author.username %}" title="">by {{post.author.username}}</a></small>
-                                            <a>{{post.view_count}} <i class="fa fa-eye"></i></a>
+                                            <a>{{post.view_count|apnumber}} <i class="fa fa-eye"></i></a>
 
                                             <div class="tag-cloud-single mt-4">
                                                 <span>Categories</span>

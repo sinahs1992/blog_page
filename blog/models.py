@@ -25,7 +25,7 @@ class Post(models.Model):
         return "{} - {}".format(self.title, self.id)
     
     def get_absolute_url(self):
-        return reverse("blog:home-blog", kwargs={"slug": self.slug})
+        return reverse("blog:single-blog", kwargs={"slug": self.slug})
     
     def save(self, *args, **kwargs):
         if not self.slug:
